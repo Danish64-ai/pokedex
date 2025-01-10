@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex</title>
+    <style>
+        *{
+            padding:0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        h1{
+            margin: 40px;
+            text-transform: capitalize;
+            text-align: center;
+            font-size: 3em;
+        }
+        ul{
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        li{
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            width: 25%;
+            font-size: 1.5rem;
+            color: #b48484;
+            margin-bottom: 70px;
+            transition: all 0.2s ease-in-out;
+        }
+        h2{
+            text-transform: capitalize;
+        }
+        li:hover{
+            transform: scale(1.5);
+        cursor: pointer;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- main section start -->
+    <section>
+      <h1>Pokedex</h1>
+      <ul id="pokedex"></ul>
+    </section>
+    <!-- main section end -->
+    <script type="text/javascript">
+        const pokedex=document.querySelector("#pokedex")
+      function getPokemon(){
+        const url="https://pokeapi.co/api/v2/pokemon"
+        const pokemonData=[]
+
+        for(let i=1;i<=151;i++){
+            const allPokemon=`${url}/${i}`
+
+            fetch(allPokemon)
+            .then((res)=>res.json())
+            .then((data)=>{
+                const pokemon={
+                    id:data.id,
+                    name:data.name,
+                    image:data.sprites.front_default
+                }
+                pokemonData.push(pokemon)
+
+                if(pokemonData.length===151){
+                    displayPokemon(pokemonData)
+                }
+            })
+        }
+      }
+
+      function displayPokemon(pokemon){
+        const pokemonString=pokemon.map((poke)=>`
+        <li>
+            <img src="${poke.image}" alt="${poke.name}"/>
+            <h2>${poke.id}. ${poke.name}</h2>
+            </li>`,
+        )
+        .join("")
+pokedex.innerHTML=pokemonString
+
+      }
+      getPokemon()
+    </script>
+  </body>
+</html>
