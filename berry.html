@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <style>
+        *{padding:0;
+       margin:0;
+       box-sizing: border-box;
+        }
+        h1{
+    margin:40px;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 3em;
+        }
+        ul#berries{
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        
+        li.berry{
+            justify-content: center;
+            width: 25%;
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 70px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        h2{
+            text-transform: capitalize;
+        }
+
+        li.berry:hover{
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- NAVIGATION BAR START -->
+    
+    <div class="container">
+<div class="container-navbar">
+    <ul class="ul-navbar">
+        <li class="li-navbar">
+            <a href="#">HOME</a>
+        </li>
+        <li class="li-navbar">
+            <a href="pokemon.html">POKEMON</a>
+        </li>
+        <li class="li-navbar">
+             <a href="berry.html">BERRY</a>
+       </li>
+    </ul>
+        </div>
+
+    <!-- NAVIGATION BAR END -->
+
+
+     <!-- main start -->
+     <section>
+        <h1>Berry</h1>
+        <ul id="berries"></ul>
+     </section>      
+     <!-- main end -->
+<script type="text/javascript">
+    const berriesTag=document.querySelector("#berries")
+    function getAllBerries(){
+        const url="https://pokeapi.co/api/v2/berry"
+        const berriesData=[]
+
+        for(let i=1;i<=64;i++){
+const allBerries=`${url}/${i}`
+
+fetch(allBerries)
+.then((res)=>res.json())
+.then((data)=>{
+    console.log(data)
+    const berry ={
+        id:data.id,
+        name:data.name,
+        max_harvest:data.max_harvest,
+        size:data.size
+    }
+    berriesData.push(berry)
+
+    if(berriesData.length===64){
+        displayBerries(berriesData)
+    }
+})
+        }
+    }
+    function displayBerries(berries){
+        const berryString=berries.map((berry)=>`
+    <li class="berry">
+        <h2>${berry.id}. ${berry.name}</h2>
+        <p>max harvest: ${berry.max_harvest}</P>
+            <p>size: ${berry.size}</p>
+        </li>`,
+    )
+    .join("")
+    berriesTag.innerHTML=berryString
+    }
+
+    getAllBerries()
+</script>
+</body>
+</html>
